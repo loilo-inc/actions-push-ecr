@@ -1,0 +1,14 @@
+{
+  "name": "actions-github-ref",
+  "version": "1.0.0",
+  "author": "keroxp <kerokerokerop@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest --forceExit",
+    "fmt": "prettier --write '**/*.ts'"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.0",
+    "@actions/exec": "^1.0.1"
+  }
+}

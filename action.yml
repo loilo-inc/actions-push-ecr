@@ -1,0 +1,23 @@
+name: 'Push to ECR'
+description: 'Tag and push docker image to ECR'
+author: 'LoiLo'
+inputs:
+  region:
+    description: AWS region on which ECR exists. Requied unless AWS_DEFAULT_REGION is set.
+    required: false
+  pull-image:
+    description: |
+      Docker image to pull before push.
+      e.g. node:12.13, owner/repo:tag, my-registory.com/my-service:1.0.0
+    required: false
+  local-image:
+    description: |
+      Source Dcoker image to tag. If not provided, pull-image will be used.
+      Either of pull-image or local-image is required.
+    required: false
+  push-image:
+    description: Docker image to push.
+    required: true
+runs:
+  using: 'node12'
+  main: 'index.js'

@@ -1,6 +1,6 @@
 # actions-push-ecr
 
-Tag and push docker image to ECR
+Github Actions that push docker image to ECR
 
 ## Usage
 

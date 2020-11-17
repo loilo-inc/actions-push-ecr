@@ -5,10 +5,14 @@
   "license": "MIT",
   "scripts": {
     "test": "jest --forceExit",
-    "fmt": "prettier --write '**/*.ts'"
+    "fmt": "prettier --write '**/*.ts'",
+    "build": "ncc build index.js -o lib"
   },
   "dependencies": {
     "@actions/core": "^1.2.0",
     "@actions/exec": "^1.0.1"
+  },
+  "devDependencies": {
+    "@zeit/ncc": "^0.22.3"
   }
 }

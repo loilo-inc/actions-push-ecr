@@ -6,13 +6,15 @@
   "scripts": {
     "test": "jest --forceExit",
     "fmt": "prettier --write '**/*.ts'",
-    "build": "ncc build index.js -o lib"
+    "build": "ncc build src/index.ts -o lib"
   },
   "dependencies": {
     "@actions/core": "^1.2.0",
     "@actions/exec": "^1.0.1"
   },
   "devDependencies": {
-    "@zeit/ncc": "^0.22.3"
+    "@types/node": "^14.14.16",
+    "@vercel/ncc": "^0.26.1",
+    "typescript": "^4.1.3"
   }
 }

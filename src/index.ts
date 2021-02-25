@@ -5,8 +5,13 @@ const cp = require("child_process");
 
 async function main() {
   try {
-    const region = core.getInput("region") ??
-      process.env["AWS_DEFAULT_REGION"];
+    const region = core.getInput("region") ||
+      process.env["AWS_DEFAULT_REGION"] ||
+      process.env["AWS_REGION"]
+    if (!region) {
+      core.setFailed("region is not specified")
+      return;
+    }
     const localImage = core.getInput("local-image");
     const pushImage = core.getInput("push-image");
     const pullImage = core.getInput("pull-image");

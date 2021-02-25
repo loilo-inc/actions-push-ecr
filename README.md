@@ -1,3 +1,7 @@
+# !!DEPRECATED!!
+
+No longer maintained.
+
 # actions-push-ecr
 
 Github Actions that push docker image to ECR

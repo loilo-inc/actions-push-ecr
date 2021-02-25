@@ -1,15 +1,17 @@
 import { ChildProcessWithoutNullStreams } from "child_process";
 const core = require("@actions/core");
+import { exec } from "@actions/exec";
 import { URL } from "url";
+
 const cp = require("child_process");
 
 async function main() {
   try {
     const region = core.getInput("region") ||
       process.env["AWS_DEFAULT_REGION"] ||
-      process.env["AWS_REGION"]
+      process.env["AWS_REGION"];
     if (!region) {
-      core.setFailed("region is not specified")
+      core.setFailed("region is not specified");
       return;
     }
     const localImage = core.getInput("local-image");
@@ -18,12 +20,12 @@ async function main() {
     const url = new URL(`https://${pushImage ?? pullImage}`);
     await loginToEcr(region, url.host);
     if (pullImage) {
-      await execCmd("docker", ["pull", pullImage]);
+      await exec("docker", ["pull", pullImage]);
     }
-    await execCmd("docker", ["tag", localImage || pullImage, pushImage]);
-    await execCmd("docker", ["push", pushImage]);
+    await exec("docker", ["tag", localImage || pullImage, pushImage]);
+    await exec("docker", ["push", pushImage]);
   } catch (e) {
-    console.error(e)
+    console.error(e);
     core.setFailed(e.message);
   }
 }
@@ -63,12 +65,14 @@ export function execCmd(
 
 export async function loginToEcr(region: string, repoUrl: string) {
   console.log(`logging in to ECR: region=${region} repo=${repoUrl}`);
-  let result = await execCmd("aws", [
+  const getLogin = execCmd("aws", [
     "ecr",
     "get-login-password",
     "--region",
     region,
   ]);
+  getLogin.p.stderr.pipe(process.stderr);
+  let result = await getLogin;
   if (result.code !== 0) {
     throw new Error(result.stderr);
   }
@@ -81,6 +85,8 @@ export async function loginToEcr(region: string, repoUrl: string) {
   ]);
   login.p.stdin.write(result.stdout);
   login.p.stdin.end();
+  login.p.stdout.pipe(process.stdout);
+  login.p.stderr.pipe(process.stderr);
   result = await login;
   if (result.code !== 0) {
     throw new Error(result.stderr);

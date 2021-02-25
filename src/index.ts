@@ -18,6 +18,7 @@ async function main() {
     await execCmd("docker", ["tag", localImage || pullImage, pushImage]);
     await execCmd("docker", ["push", pushImage]);
   } catch (e) {
+    console.error(e)
     core.setFailed(e.message);
   }
 }
@@ -56,7 +57,7 @@ export function execCmd(
 }
 
 export async function loginToEcr(region: string, repoUrl: string) {
-  console.log("logging in to ECR");
+  console.log(`logging in to ECR: region=${region} repo=${repoUrl}`);
   let result = await execCmd("aws", [
     "ecr",
     "get-login-password",
